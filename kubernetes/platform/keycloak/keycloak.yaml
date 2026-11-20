@@ -1,0 +1,73 @@
+# Keycloak: учётные записи, первый вход по приглашению, токены с привязкой к ключу устройства (DPoP).
+# Хосты задаются в clusters/<env>/keycloak (патч). TLS снимает Traefik; внутри кластера — HTTP за NetworkPolicy.
+apiVersion: k8s.keycloak.org/v2beta1
+kind: Keycloak
+metadata:
+  name: keycloak
+  namespace: deck-auth
+spec:
+  instances: 1
+  # Keycloak с модулем deck-invite (первый вход по приглашению): images/keycloak, собирает platform-images.yaml.
+  # Образ собран с теми же параметрами сборки, что ниже, поэтому стартует без пересборки.
+  image: ghcr.io/stevv1e/deck-keycloak:26.7.5
+  startOptimized: true
+  db:
+    vendor: postgres
+    host: deck-pg-rw.deck-db.svc.cluster.local
+    port: 5432
+    database: keycloak
+    usernameSecret: {name: keycloak-db, key: username}
+    passwordSecret: {name: keycloak-db, key: password}
+  http:
+    httpEnabled: true
+    httpPort: 8080
+  hostname:
+    hostname: https://id.DOMAIN_PLACEHOLDER
+    admin: https://sso.admin.DOMAIN_PLACEHOLDER:9443
+    strict: true
+    backchannelDynamic: true
+  proxy:
+    headers: xforwarded
+  ingress:
+    enabled: false
+  networkPolicy:
+    enabled: false              # свои политики: platform/network-policies
+  bootstrapAdmin:
+    user:
+      secret: keycloak-bootstrap-admin
+  features:
+    enabled:
+      - dpop
+      - passkeys
+    disabled:
+      - token-exchange-standard # в 2026 здесь нашли обход привязки токена (architecture.md, 3.7)
+      - device-flow
+      - impersonation
+      - ciba
+      - kerberos
+  additionalOptions:
+    # Сертификат устройства из заголовка Traefik (middleware device-cert-pem).
+    - name: spi-x509cert-lookup--provider
+      value: traefik
+    - name: db-url-properties          # TLS к Postgres обязателен: pg_hba отклоняет открытый текст
+      value: "?sslmode=require"
+    # Заголовкам X-Forwarded-* и сертификата доверяем только от подов (Traefik).
+    - name: proxy-trusted-addresses
+      value: 10.42.0.0/16
+    - name: log-console-output
+      value: json
+    - name: metrics-enabled
+      value: "true"
+  resources:
+    requests: {cpu: 200m, memory: 700Mi}
+    limits: {memory: 1200Mi}
+  unsupported:
+    podTemplate:
+      spec:
+        securityContext:
+          runAsNonRoot: true
+          seccompProfile: {type: RuntimeDefault}
+        containers:
+          - securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: {drop: [ALL]}

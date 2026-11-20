@@ -1,0 +1,14 @@
+operation: CREATE
+namespace: deck-ssh
+object:
+  apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: srv
+    namespace: deck-ssh
+  spec:
+    podSelector: {}
+userInfo:
+  username: system:serviceaccount:deck-system:space-operator
+  groups:
+  - system:serviceaccounts

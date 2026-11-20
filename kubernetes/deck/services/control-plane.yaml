@@ -1,0 +1,140 @@
+# control-plane: API приложения. Доступен из интернета (через mTLS), поэтому прав почти нет (architecture.md, 3.9).
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: control-plane
+  namespace: deck-system
+automountServiceAccountToken: true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: control-plane
+  namespace: deck-system
+rules:
+  # Только описания пространств. Удалить Space нельзя — только запросить удаление (deleteRequestedAt).
+  - apiGroups: [deck.fugu]
+    resources: [spaces]
+    verbs: [get, list, watch, create, update, patch]
+  - apiGroups: [deck.fugu]
+    resources: [spaces/status]
+    verbs: [get]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: control-plane
+  namespace: deck-system
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: control-plane}
+subjects:
+  - {kind: ServiceAccount, name: control-plane, namespace: deck-system}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: control-plane
+  namespace: deck-system
+  labels: {app.kubernetes.io/name: control-plane, app.kubernetes.io/part-of: fugu-deck}
+spec:
+  # Две реплики (D73): общее состояние — в Postgres (одноразовые DPoP, активность пространств), фоновые циклы сна и
+  # push ведёт одна — та, что держит advisory lock.
+  replicas: 2
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels: {app.kubernetes.io/name: control-plane}
+  template:
+    metadata:
+      labels: {app.kubernetes.io/name: control-plane, app.kubernetes.io/part-of: fugu-deck}
+    spec:
+      serviceAccountName: control-plane
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: control-plane
+          image: ghcr.io/stevv1e/deck-control-plane:0.0.0
+          ports:
+            - {name: http, containerPort: 8080}
+            - {name: auth, containerPort: 8081}
+            - {name: admin, containerPort: 8082}
+          env:
+            # Базовый домен окружения и публичный ключ HPKE keyguard (попадает в приглашение) — в overlay окружения.
+            - {name: DECK_DOMAIN, value: "DOMAIN_PLACEHOLDER"}
+            - {name: DECK_HPKE_PUBLIC, value: ""}
+            - name: DECK_GOOGLE_OAUTH_CLIENT_ID
+              valueFrom: {secretKeyRef: {name: google-oauth, key: client_id, optional: true}}
+            # Пространство без обращений дольше этого срока усыпляется (под убирается, данные остаются);
+            # первое обращение владельца будит его. "0" — не усыплять.
+            - {name: DECK_SLEEP_AFTER, value: "60m"}
+            # Серверы пользователей и права агентов — через ssh-gateway (он же их проверяет и хранит)
+            - {name: DECK_SSH_GATEWAY_URL, value: "http://ssh-gateway.deck-ssh.svc.cluster.local:8080"}
+            - {name: DECK_DB_HOST, value: "deck-pg-rw.deck-db.svc.cluster.local"}
+            - {name: DECK_DB_NAME, value: "controlplane"}
+            - name: DB_USER
+              valueFrom: {secretKeyRef: {name: controlplane-db, key: username}}
+            - name: DB_PASSWORD
+              valueFrom: {secretKeyRef: {name: controlplane-db, key: password}}
+            - {name: DECK_KEYGUARD_URL, value: "http://keyguard.deck-keys.svc.cluster.local:8080"}
+            - {name: DECK_SSH_GATEWAY_URL, value: "http://ssh-gateway.deck-ssh.svc.cluster.local:8080"}
+            - {name: DECK_KEYCLOAK_URL, value: "http://keycloak-service.deck-auth.svc.cluster.local:8080"}
+            # Сервисная учётная запись deck-control-plane в realm deck: только создание пользователей.
+            - name: KEYCLOAK_CLIENT_SECRET
+              valueFrom: {secretKeyRef: {name: keycloak-control-plane-client, key: secret}}
+            - {name: DECK_SPACES_NAMESPACE, value: "deck-system"}
+            # Заголовки сертификата устройства доверяются только от Traefik (NetworkPolicy пускает лишь его)
+            - {name: DECK_TRUSTED_PROXY_CIDR, value: "10.42.0.0/16"}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          readinessProbe:
+            httpGet: {path: /readyz, port: http}
+          livenessProbe:
+            httpGet: {path: /healthz, port: http}
+            periodSeconds: 20
+          resources:
+            requests: {cpu: 50m, memory: 96Mi}
+            limits: {memory: 384Mi}
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+            - {name: keyguard-token, mountPath: /var/run/secrets/keyguard, readOnly: true}
+            - {name: ssh-gateway-token, mountPath: /var/run/secrets/ssh-gateway, readOnly: true}
+            - {name: fcm, mountPath: /var/run/secrets/fcm, readOnly: true}
+      volumes:
+        - {name: tmp, emptyDir: {}}
+        # Ключ Firebase для push-уведомлений; нет секрета — control-plane работает без уведомлений.
+        - name: fcm
+          secret: {secretName: fcm-credentials, optional: true}
+        # Токен для вызовов keyguard: audience=keyguard, живёт 10 минут, kubelet обновляет сам.
+        - name: keyguard-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: keyguard
+                  expirationSeconds: 600
+                  path: token
+        # Токен для ssh-gateway: отдельная audience — токен для keyguard шлюз не примет, и наоборот.
+        - name: ssh-gateway-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: ssh-gateway
+                  expirationSeconds: 600
+                  path: token
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: control-plane
+  namespace: deck-system
+  labels: {app.kubernetes.io/name: control-plane}
+spec:
+  selector: {app.kubernetes.io/name: control-plane}
+  ports:
+    - {name: http, port: 8080, targetPort: http}
+    - {name: auth, port: 8081, targetPort: auth}
+    - {name: admin, port: 8082, targetPort: admin}

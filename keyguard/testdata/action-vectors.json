@@ -1,0 +1,318 @@
+{
+ "comment": "Создано fugu-deck-app/mobile/tests/vectors.ts кодом приложения. Не править вручную.",
+ "device_id": "d-6UoWwDCkLjV0J-pQ",
+ "ts": 1790856000,
+ "confirm_jwk": {
+  "kty": "EC",
+  "crv": "P-256",
+  "x": "UVw9brnjlrkE0_7Kf1T9zQzB6Ze_N13KUVrQpsO0A18",
+  "y": "RTa-OlDzGPv5pUdZAqIhUCvvDVfgjFOyzApW8X2fk1Q"
+ },
+ "vectors": [
+  {
+   "name": "key_put",
+   "canonical": "{\"ct_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_hint\":\"6789\",\"nonce\":\"vector-nonce-000000000\",\"provider\":\"anthropic\",\"ts\":1790856000,\"type\":\"key_put\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJjdF9zaGEyNTYiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwiZGV2aWNlX2lkIjoiZC02VW9Xd0RDa0xqVjBKLXBRIiwia2V5X2hpbnQiOiI2Nzg5Iiwibm9uY2UiOiJ2ZWN0b3Itbm9uY2UtMDAwMDAwMDAwIiwicHJvdmlkZXIiOiJhbnRocm9waWMiLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6ImtleV9wdXQifQ.rS8wZJnoVHWonV4goNwArdzvUuFPl-bylAtSVsHHpXYwMdn6qhRTTMsccLGZ1bAj3BWmAFEOK_4b4Ka4cGOqWQ"
+  },
+  {
+   "name": "key_put Kimi Code",
+   "canonical": "{\"ct_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_hint\":\"6789\",\"nonce\":\"vector-nonce-000000001\",\"provider\":\"kimi\",\"ts\":1790856000,\"type\":\"key_put\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJjdF9zaGEyNTYiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwiZGV2aWNlX2lkIjoiZC02VW9Xd0RDa0xqVjBKLXBRIiwia2V5X2hpbnQiOiI2Nzg5Iiwibm9uY2UiOiJ2ZWN0b3Itbm9uY2UtMDAwMDAwMDAxIiwicHJvdmlkZXIiOiJraW1pIiwidHMiOjE3OTA4NTYwMDAsInR5cGUiOiJrZXlfcHV0In0.3d_NO_7pijbKm66xxdKbz0ryM7qN0ZgDBi0gBr8l8NBjc6w9sai76ZRj-6oAiRyOoH-L6u70Rti3enrAHhGOtg"
+  },
+  {
+   "name": "key_put Google Drive",
+   "canonical": "{\"ct_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_hint\":\"6789\",\"nonce\":\"vector-nonce-000000002\",\"provider\":\"google_drive\",\"ts\":1790856000,\"type\":\"key_put\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJjdF9zaGEyNTYiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwiZGV2aWNlX2lkIjoiZC02VW9Xd0RDa0xqVjBKLXBRIiwia2V5X2hpbnQiOiI2Nzg5Iiwibm9uY2UiOiJ2ZWN0b3Itbm9uY2UtMDAwMDAwMDAyIiwicHJvdmlkZXIiOiJnb29nbGVfZHJpdmUiLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6ImtleV9wdXQifQ.8JAYJUfDnrG253oUiIe-PjJhclxYkLF0Zo3PZRpUY4NJOpMhOsb6wv2rTj22fBFe17zBgtWUrkx8BXYwNL-NvQ"
+  },
+  {
+   "name": "key_delete",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000003\",\"provider\":\"sakana\",\"ts\":1790856000,\"type\":\"key_delete\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMDMiLCJwcm92aWRlciI6InNha2FuYSIsInRzIjoxNzkwODU2MDAwLCJ0eXBlIjoia2V5X2RlbGV0ZSJ9.Nk6rcMabxt7-OytkYmFXxriowQiMDJ5KsC-aADffN7Fblq24lTE2i6HaMgtYDUMhg_LnJh4ejuysbsccUlmjUA"
+  },
+  {
+   "name": "key_delete Moonshot",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000004\",\"provider\":\"moonshot\",\"ts\":1790856000,\"type\":\"key_delete\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMDQiLCJwcm92aWRlciI6Im1vb25zaG90IiwidHMiOjE3OTA4NTYwMDAsInR5cGUiOiJrZXlfZGVsZXRlIn0.HaYyKP63HkcRZqEdiNhdNrDTiQPUVbiHVbXrF-P8Os5sRqts_trdooI14sn5qBciobVHmgwdjwkubxKmos7cmA"
+  },
+  {
+   "name": "mcp_put с токеном",
+   "canonical": "{\"ct_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"id\":\"docs\",\"name\":\"Документация\",\"nonce\":\"vector-nonce-000000005\",\"token_hint\":\"ab_9\",\"ts\":1790856000,\"type\":\"mcp_put\",\"url\":\"https://mcp.example.com/mcp\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJjdF9zaGEyNTYiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwiZGV2aWNlX2lkIjoiZC02VW9Xd0RDa0xqVjBKLXBRIiwiaWQiOiJkb2NzIiwibmFtZSI6ItCU0L7QutGD0LzQtdC90YLQsNGG0LjRjyIsIm5vbmNlIjoidmVjdG9yLW5vbmNlLTAwMDAwMDAwNSIsInRva2VuX2hpbnQiOiJhYl85IiwidHMiOjE3OTA4NTYwMDAsInR5cGUiOiJtY3BfcHV0IiwidXJsIjoiaHR0cHM6Ly9tY3AuZXhhbXBsZS5jb20vbWNwIn0.39qgt9bMs3L-8kIuKUFPvHZbETB8_9HLPuT-8oLWrGNwvBBchGdFCfORYww5D6UXgpNP-VFDHypj12Ns804yMQ"
+  },
+  {
+   "name": "mcp_put без токена",
+   "canonical": "{\"ct_sha256\":null,\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"id\":\"weather\",\"name\":\"Погода\",\"nonce\":\"vector-nonce-000000006\",\"token_hint\":null,\"ts\":1790856000,\"type\":\"mcp_put\",\"url\":\"https://weather.example.org/v1/mcp?x=1\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJjdF9zaGEyNTYiOm51bGwsImRldmljZV9pZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsImlkIjoid2VhdGhlciIsIm5hbWUiOiLQn9C-0LPQvtC00LAiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMDYiLCJ0b2tlbl9oaW50IjpudWxsLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6Im1jcF9wdXQiLCJ1cmwiOiJodHRwczovL3dlYXRoZXIuZXhhbXBsZS5vcmcvdjEvbWNwP3g9MSJ9.hpL4-7o9ByAMAOBvStwtUTH96zT53PPkA07MOpyEESMCmz9ybZjk0SQIFUXB6wsU1JEtVbA_22kNy7fxRH8cMg"
+  },
+  {
+   "name": "mcp_delete",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"id\":\"docs\",\"nonce\":\"vector-nonce-000000007\",\"ts\":1790856000,\"type\":\"mcp_delete\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJpZCI6ImRvY3MiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMDciLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6Im1jcF9kZWxldGUifQ.ZP1DM-yCthN6kXIgjnrV9u2vyj0MdWxRAacoQVWHUlAUyLfEkJA5BlekqZ7eT4a-R4mxIWCswl1JV9WoMgQDuQ"
+  },
+  {
+   "name": "egress_set",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"domains\":[\"docs.python.org\",\"developer.mozilla.org\"],\"nonce\":\"vector-nonce-000000008\",\"ts\":1790856000,\"type\":\"egress_set\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJkb21haW5zIjpbImRvY3MucHl0aG9uLm9yZyIsImRldmVsb3Blci5tb3ppbGxhLm9yZyJdLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMDgiLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6ImVncmVzc19zZXQifQ.tTL-dxNmG1H0heWlGUUCt8uErjmGtjwNszX2Jo1XHxRV-OFwGnN281l_T11hV4l8SL59-rY7Fz0ykD9w1Vw-MQ"
+  },
+  {
+   "name": "egress_set: пустой список",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"domains\":[],\"nonce\":\"vector-nonce-000000009\",\"ts\":1790856000,\"type\":\"egress_set\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJkb21haW5zIjpbXSwibm9uY2UiOiJ2ZWN0b3Itbm9uY2UtMDAwMDAwMDA5IiwidHMiOjE3OTA4NTYwMDAsInR5cGUiOiJlZ3Jlc3Nfc2V0In0.i-Dv3LBJyaOPd97Lig1-HqGazdbGMRi6GlckMMyo0Vl6ZefAzfvwKuEsaYJ7mYpUV3dSb2KsHHBXb8pcj1jZ2Q"
+  },
+  {
+   "name": "spend_limit",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"limit_usd_month\":25.5,\"nonce\":\"vector-nonce-000000010\",\"ts\":1790856000,\"type\":\"spend_limit\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJsaW1pdF91c2RfbW9udGgiOjI1LjUsIm5vbmNlIjoidmVjdG9yLW5vbmNlLTAwMDAwMDAxMCIsInRzIjoxNzkwODU2MDAwLCJ0eXBlIjoic3BlbmRfbGltaXQifQ.VUdt0ivxLoHByxPEBJoDqMq6FhxYWVTQ4qQ3MLNpfZRyTH_guIQmgsbzlu2Sqt_JzFY355Jzop56CWhjsoqxNg"
+  },
+  {
+   "name": "spend_limit: снять",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"limit_usd_month\":null,\"nonce\":\"vector-nonce-000000011\",\"ts\":1790856000,\"type\":\"spend_limit\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJsaW1pdF91c2RfbW9udGgiOm51bGwsIm5vbmNlIjoidmVjdG9yLW5vbmNlLTAwMDAwMDAxMSIsInRzIjoxNzkwODU2MDAwLCJ0eXBlIjoic3BlbmRfbGltaXQifQ.FDDDPx-EBKiwvoEAhKhG7_1Rx8hAPNFaUw94pqLGiu9XlVkbrq3YErm-ybRykCo2VRmxWzmAkg2rICmqyOQ3Yg"
+  },
+  {
+   "name": "grant целая сумма",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-04\",\"limit_tokens\":null,\"limit_usd\":20,\"members\":[\"anna\",\"bob\"],\"model\":\"fugu-max-v1.0\",\"nonce\":\"vector-nonce-000000012\",\"per_member_usd_day\":5,\"proposal\":\"p-7\",\"provider\":\"sakana\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJjaGF0IjoiYy00MiIsImRldmljZV9pZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsImtleV91bnRpbCI6IjIwMjYtMTAtMDQiLCJsaW1pdF90b2tlbnMiOm51bGwsImxpbWl0X3VzZCI6MjAsIm1lbWJlcnMiOlsiYW5uYSIsImJvYiJdLCJtb2RlbCI6ImZ1Z3UtbWF4LXYxLjAiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMTIiLCJwZXJfbWVtYmVyX3VzZF9kYXkiOjUsInByb3Bvc2FsIjoicC03IiwicHJvdmlkZXIiOiJzYWthbmEiLCJzcGFjZSI6InQtc2hvcCIsInRzIjoxNzkwODU2MDAwLCJ0eXBlIjoiZ3JhbnQiLCJ1bnRpbCI6IjIwMjYtMTAtMDQifQ.2W9CMm9uukyeWrOcsc5F4C8H5vItS8PIe0kIQW5a_1oCrJ2Km9JzUYOgle8uSOiimKPacDA0m9sO_X5uaAIhQw"
+  },
+  {
+   "name": "grant с копейками и без дневного лимита",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-03\",\"limit_tokens\":null,\"limit_usd\":12.5,\"members\":[\"anna\"],\"model\":\"claude-x\",\"nonce\":\"vector-nonce-000000013\",\"per_member_usd_day\":null,\"proposal\":\"p-8\",\"provider\":\"anthropic\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJjaGF0IjoiYy00MiIsImRldmljZV9pZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsImtleV91bnRpbCI6IjIwMjYtMTAtMDMiLCJsaW1pdF90b2tlbnMiOm51bGwsImxpbWl0X3VzZCI6MTIuNSwibWVtYmVycyI6WyJhbm5hIl0sIm1vZGVsIjoiY2xhdWRlLXgiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMTMiLCJwZXJfbWVtYmVyX3VzZF9kYXkiOm51bGwsInByb3Bvc2FsIjoicC04IiwicHJvdmlkZXIiOiJhbnRocm9waWMiLCJzcGFjZSI6InQtc2hvcCIsInRzIjoxNzkwODU2MDAwLCJ0eXBlIjoiZ3JhbnQiLCJ1bnRpbCI6IjIwMjYtMTAtMDQifQ.F-NMdmREPcxFtActCTklkhyJn2-GrTb6eARBLMff2ise2dZJp5YtJB44jMSNPq_l7AW2GE0MkbRZTf_LYLu5UQ"
+  },
+  {
+   "name": "grant 0.25",
+   "canonical": "{\"chat\":\"c-1\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-02\",\"limit_tokens\":null,\"limit_usd\":0.25,\"members\":[\"bob\"],\"model\":\"fugu-max-v1.0\",\"nonce\":\"vector-nonce-000000014\",\"per_member_usd_day\":0.05,\"proposal\":\"p-9\",\"provider\":\"sakana\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-02\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJjaGF0IjoiYy0xIiwiZGV2aWNlX2lkIjoiZC02VW9Xd0RDa0xqVjBKLXBRIiwia2V5X3VudGlsIjoiMjAyNi0xMC0wMiIsImxpbWl0X3Rva2VucyI6bnVsbCwibGltaXRfdXNkIjowLjI1LCJtZW1iZXJzIjpbImJvYiJdLCJtb2RlbCI6ImZ1Z3UtbWF4LXYxLjAiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMTQiLCJwZXJfbWVtYmVyX3VzZF9kYXkiOjAuMDUsInByb3Bvc2FsIjoicC05IiwicHJvdmlkZXIiOiJzYWthbmEiLCJzcGFjZSI6InQtc2hvcCIsInRzIjoxNzkwODU2MDAwLCJ0eXBlIjoiZ3JhbnQiLCJ1bnRpbCI6IjIwMjYtMTAtMDIifQ.M86kuvwFrDFx7U4xsmCICBqb5pJ6RbqAzCaV5uM7HVN7rQaYAO7e9gbFPo3DsxognKmVBmKxwXsh3NL7dtUCBw"
+  },
+  {
+   "name": "grant на Git-токен",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-04\",\"limit_tokens\":null,\"limit_usd\":20,\"members\":[\"anna\",\"bob\"],\"model\":\"git\",\"nonce\":\"vector-nonce-000000015\",\"per_member_usd_day\":null,\"proposal\":\"p-10\",\"provider\":\"github\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJjaGF0IjoiYy00MiIsImRldmljZV9pZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsImtleV91bnRpbCI6IjIwMjYtMTAtMDQiLCJsaW1pdF90b2tlbnMiOm51bGwsImxpbWl0X3VzZCI6MjAsIm1lbWJlcnMiOlsiYW5uYSIsImJvYiJdLCJtb2RlbCI6ImdpdCIsIm5vbmNlIjoidmVjdG9yLW5vbmNlLTAwMDAwMDAxNSIsInBlcl9tZW1iZXJfdXNkX2RheSI6bnVsbCwicHJvcG9zYWwiOiJwLTEwIiwicHJvdmlkZXIiOiJnaXRodWIiLCJzcGFjZSI6InQtc2hvcCIsInRzIjoxNzkwODU2MDAwLCJ0eXBlIjoiZ3JhbnQiLCJ1bnRpbCI6IjIwMjYtMTAtMDQifQ.a6-3umY4G7Z5zUtDudc2G-c2NKgFUng6HqN-91y8LPM86L6-KS2aOl6OCVLgPKJtlm69dzceAlL9FU69uOcPdA"
+  },
+  {
+   "name": "grant_revoke",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000016\",\"proposal\":\"p-7\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant_revoke\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJjaGF0IjoiYy00MiIsImRldmljZV9pZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsIm5vbmNlIjoidmVjdG9yLW5vbmNlLTAwMDAwMDAxNiIsInByb3Bvc2FsIjoicC03Iiwic3BhY2UiOiJ0LXNob3AiLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6ImdyYW50X3Jldm9rZSJ9.XHbx_JOdKQtO4fh3NZmQaN8jzDOnQMsabLFbCvJuNV8LKLK7Vx6YNEEoby7AQORPgjnFQv_9xrBsdcbAgv_lVw"
+  },
+  {
+   "name": "server_add",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"host\":\"app.example.kz\",\"host_key\":\"SHA256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"nonce\":\"vector-nonce-000000017\",\"port\":22,\"server\":\"prod-1\",\"space\":\"u-anna\",\"ts\":1790856000,\"type\":\"server_add\",\"user\":\"deck-agent\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJob3N0IjoiYXBwLmV4YW1wbGUua3oiLCJob3N0X2tleSI6IlNIQTI1NjpBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBIiwibm9uY2UiOiJ2ZWN0b3Itbm9uY2UtMDAwMDAwMDE3IiwicG9ydCI6MjIsInNlcnZlciI6InByb2QtMSIsInNwYWNlIjoidS1hbm5hIiwidHMiOjE3OTA4NTYwMDAsInR5cGUiOiJzZXJ2ZXJfYWRkIiwidXNlciI6ImRlY2stYWdlbnQifQ.ace-UMbNzQwGSPg0X6k3Ka6fIxOs5MW_r5GUGg8w8EE45BZwjfwSoPbz1BaGXvBvWViI61kKArC-7kbLsEgFLw"
+  },
+  {
+   "name": "agent_rights",
+   "canonical": "{\"agent\":\"duty\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"limit_usd_month\":30,\"nonce\":\"vector-nonce-000000018\",\"read_without_confirm\":true,\"servers\":[\"prod-1\"],\"space\":\"u-anna\",\"ts\":1790856000,\"type\":\"agent_rights\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJhZ2VudCI6ImR1dHkiLCJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJsaW1pdF91c2RfbW9udGgiOjMwLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMTgiLCJyZWFkX3dpdGhvdXRfY29uZmlybSI6dHJ1ZSwic2VydmVycyI6WyJwcm9kLTEiXSwic3BhY2UiOiJ1LWFubmEiLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6ImFnZW50X3JpZ2h0cyJ9.vE7nToHEw7bva0NUKlgCKN9YM4OlnGrA99nxA4ZdAyJluqzz--pCo_5jFmnPJKDTz7ZJgDGGZSgsl7_vE4vlbg"
+  },
+  {
+   "name": "ssh_write: кавычки, обратная косая, кириллица, <>&",
+   "canonical": "{\"agent\":\"duty\",\"command\":\"echo \\\"привет\\\" > /tmp/a\\\\b && grep -c '<x>' f & 😀\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000019\",\"server\":\"prod-1\",\"space\":\"u-anna\",\"ts\":1790856000,\"type\":\"ssh_write\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJhZ2VudCI6ImR1dHkiLCJjb21tYW5kIjoiZWNobyBcItC_0YDQuNCy0LXRglwiID4gL3RtcC9hXFxiICYmIGdyZXAgLWMgJzx4PicgZiAmIPCfmIAiLCJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMTkiLCJzZXJ2ZXIiOiJwcm9kLTEiLCJzcGFjZSI6InUtYW5uYSIsInRzIjoxNzkwODU2MDAwLCJ0eXBlIjoic3NoX3dyaXRlIn0.ST3DOaN_CrjVILvVpzc1ud28qxw4isYwxr14m6I1LlwoWIRJwg7-X2Q-ghHg71NWPKD8ZDejdVoH5wt2Id0bzg"
+  },
+  {
+   "name": "ssh_danger",
+   "canonical": "{\"agent\":\"duty\",\"command\":\"sudo reboot\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000020\",\"server\":\"prod-1\",\"space\":\"u-anna\",\"ts\":1790856000,\"type\":\"ssh_danger\",\"typed_server\":\"prod-1\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJhZ2VudCI6ImR1dHkiLCJjb21tYW5kIjoic3VkbyByZWJvb3QiLCJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMjAiLCJzZXJ2ZXIiOiJwcm9kLTEiLCJzcGFjZSI6InUtYW5uYSIsInRzIjoxNzkwODU2MDAwLCJ0eXBlIjoic3NoX2RhbmdlciIsInR5cGVkX3NlcnZlciI6InByb2QtMSJ9.ORSfgP0QvaeotsI_zp5h1I38BsSBwBfevSE48zemKcJPiN27n1N2GE53XzcGhQC7FV351E0au2LG7GbElmr8aQ"
+  },
+  {
+   "name": "role_change",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"member\":\"bob\",\"nonce\":\"vector-nonce-000000021\",\"role\":\"editor\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"role_change\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJtZW1iZXIiOiJib2IiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMjEiLCJyb2xlIjoiZWRpdG9yIiwic3BhY2UiOiJ0LXNob3AiLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6InJvbGVfY2hhbmdlIn0.1jZ-ym323_JIfWHnpNW5bG24yfjaXHU71Z_QyN3nyF5-yi47X-PQ2WvN-1oIRfNWhQb25WQPWHbribUz2oIhlQ"
+  },
+  {
+   "name": "role_change: исключить",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"member\":\"bob\",\"nonce\":\"vector-nonce-000000022\",\"role\":\"none\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"role_change\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJtZW1iZXIiOiJib2IiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMjIiLCJyb2xlIjoibm9uZSIsInNwYWNlIjoidC1zaG9wIiwidHMiOjE3OTA4NTYwMDAsInR5cGUiOiJyb2xlX2NoYW5nZSJ9.0FrjOA9Datzp0uU3G4MziGmB3_wAqZFN6pFhgMwjvy8sZe6jjW7a4-R1ZJFx-zluMgZIyQaKHTf2vrB9912_zQ"
+  },
+  {
+   "name": "device_enroll",
+   "canonical": "{\"confirm_jkt\":\"q7Xo0Yb1mC3nD5pF7rH9tJ1vL3xN5zP7bR9dT1fV3hA\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"name\":\"iPhone 17 Pro — Анна\",\"nonce\":\"vector-nonce-000000023\",\"session_jkt\":\"q7Xo0Yb1mC3nD5pF7rH9tJ1vL3xN5zP7bR9dT1fV3hA\",\"ts\":1790856000,\"type\":\"device_enroll\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJjb25maXJtX2prdCI6InE3WG8wWWIxbUMzbkQ1cEY3ckg5dEoxdkwzeE41elA3YlI5ZFQxZlYzaEEiLCJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJuYW1lIjoiaVBob25lIDE3IFBybyDigJQg0JDQvdC90LAiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMjMiLCJzZXNzaW9uX2prdCI6InE3WG8wWWIxbUMzbkQ1cEY3ckg5dEoxdkwzeE41elA3YlI5ZFQxZlYzaEEiLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6ImRldmljZV9lbnJvbGwifQ.M_ydEDO6e6kR8SlQoUtTln-jMKa9V7RlXJvomMJ_j5QNSGYx898gjAMqq1EuEXhZ1puZuxEwxIF5JQil4wn6hQ"
+  },
+  {
+   "name": "device_approve",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"name\":\"iPhone 17 Pro — Анна\",\"nonce\":\"vector-nonce-000000024\",\"target\":\"d-Zm9vYmFyMTIzNDU2\",\"ts\":1790856000,\"type\":\"device_approve\",\"user\":\"anna\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJuYW1lIjoiaVBob25lIDE3IFBybyDigJQg0JDQvdC90LAiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMjQiLCJ0YXJnZXQiOiJkLVptOXZZbUZ5TVRJek5EVTIiLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6ImRldmljZV9hcHByb3ZlIiwidXNlciI6ImFubmEifQ.qVhiMTphPVXnCzYKWOHOAXPF2uxxaCVLWNUwIvu5b1gJtr9JyRwZgnwSmX-T3X8oivkciNzIx88PKSEH_l0IsA"
+  },
+  {
+   "name": "device_revoke",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000025\",\"target\":\"d-Zm9vYmFyMTIzNDU2\",\"ts\":1790856000,\"type\":\"device_revoke\",\"user\":\"anna\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMjUiLCJ0YXJnZXQiOiJkLVptOXZZbUZ5TVRJek5EVTIiLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6ImRldmljZV9yZXZva2UiLCJ1c2VyIjoiYW5uYSJ9.ga5QLwGbgfZ6ehf7mMTdOYKmWUBuWZN6wmteaS7dDLgu_Pgd5GoCROxnQjku_yDhaMQJliJmChhCCfbFmGeGaQ"
+  },
+  {
+   "name": "pair_approve",
+   "canonical": "{\"code\":\"ABCDEFGH\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"name\":\"Мой ПК\",\"nonce\":\"vector-nonce-000000026\",\"pairing\":\"q7Xo0Yb1mC3nD5pF7rH9tJ1vL3xN5zP7bR9dT1fV3hA\",\"session_jkt\":\"q7Xo0Yb1mC3nD5pF7rH9tJ1vL3xN5zP7bR9dT1fV3hA\",\"target\":\"d-Zm9vYmFyMTIzNDU2\",\"ts\":1790856000,\"type\":\"pair_approve\",\"user\":\"anna\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJjb2RlIjoiQUJDREVGR0giLCJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJuYW1lIjoi0JzQvtC5INCf0JoiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMjYiLCJwYWlyaW5nIjoicTdYbzBZYjFtQzNuRDVwRjdySDl0SjF2TDN4TjV6UDdiUjlkVDFmVjNoQSIsInNlc3Npb25famt0IjoicTdYbzBZYjFtQzNuRDVwRjdySDl0SjF2TDN4TjV6UDdiUjlkVDFmVjNoQSIsInRhcmdldCI6ImQtWm05dlltRnlNVEl6TkRVMiIsInRzIjoxNzkwODU2MDAwLCJ0eXBlIjoicGFpcl9hcHByb3ZlIiwidXNlciI6ImFubmEifQ.3ldZH33Ycnc1lkhqLCoWZGAIU7maXS40xTj1l9AuWMFZkXJZcntm0J4ZPMlt8RPm9SQKHdeUCS3bP_B24lsvdg"
+  },
+  {
+   "name": "account_delete",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000027\",\"ts\":1790856000,\"type\":\"account_delete\",\"user\":\"anna\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMjciLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6ImFjY291bnRfZGVsZXRlIiwidXNlciI6ImFubmEifQ.tp4hb-LPmIDZ-0ee6e4048sWGZExN3ACo7VSHlIhuzUwG3ZK-KHOzRYk61KRrRcOXFSchXjeL84HjDRvrSGUyw"
+  },
+  {
+   "name": "invite_create",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000028\",\"ts\":1790856000,\"type\":\"invite_create\",\"user\":\"dave\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMjgiLCJ0cyI6MTc5MDg1NjAwMCwidHlwZSI6Imludml0ZV9jcmVhdGUiLCJ1c2VyIjoiZGF2ZSJ9.Hrs7Lnk47dxXSa2tVaEHGM9RkqTX4KLKAE9FqnPo3KgzBaiUj6yZxVhvAspaVAGioOqFd89_Id-4FurGFr1xVQ"
+  },
+  {
+   "name": "space_delete",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000029\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"space_delete\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJkZXZpY2VfaWQiOiJkLTZVb1d3RENrTGpWMEotcFEiLCJub25jZSI6InZlY3Rvci1ub25jZS0wMDAwMDAwMjkiLCJzcGFjZSI6InQtc2hvcCIsInRzIjoxNzkwODU2MDAwLCJ0eXBlIjoic3BhY2VfZGVsZXRlIn0.W7D5wKkOyAeopLKyS79Ho-SCjFgyfHlWDdP6Qq5q7e4OdQvZZkCf52YmJ8TDhEgMgs76Pbpsx9n3VEKvSQl-pA"
+  },
+  {
+   "name": "tool_approve",
+   "canonical": "{\"approval\":\"a1b2c3d4e5f6\",\"args_sha256\":\"q7Xo0Yb1mC3nD5pF7rH9tJ1vL3xN5zP7bR9dT1fV3hA\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000030\",\"space\":\"u-anna\",\"tool\":\"github_create_file\",\"ts\":1790856000,\"type\":\"tool_approve\"}",
+   "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsInR5cCI6ImRlY2stYWN0aW9uK2p3cyJ9.eyJhcHByb3ZhbCI6ImExYjJjM2Q0ZTVmNiIsImFyZ3Nfc2hhMjU2IjoicTdYbzBZYjFtQzNuRDVwRjdySDl0SjF2TDN4TjV6UDdiUjlkVDFmVjNoQSIsImRldmljZV9pZCI6ImQtNlVvV3dEQ2tMalYwSi1wUSIsIm5vbmNlIjoidmVjdG9yLW5vbmNlLTAwMDAwMDAzMCIsInNwYWNlIjoidS1hbm5hIiwidG9vbCI6ImdpdGh1Yl9jcmVhdGVfZmlsZSIsInRzIjoxNzkwODU2MDAwLCJ0eXBlIjoidG9vbF9hcHByb3ZlIn0.djNep6LhnUdOVtVkX9U-YCwz2gI_wKT9zx04uQsQcKEKaj9dKJDKsEUenXk62YdV0pqcBos0wDP3K6lGn54NGA"
+  }
+ ],
+ "invalid": [
+  {
+   "name": "неизвестный тип",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000000\",\"ts\":1790856000,\"type\":\"transfer_all\"}"
+  },
+  {
+   "name": "лишнее поле (не показано человеку)",
+   "canonical": "{\"also\":\"x\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000000\",\"provider\":\"sakana\",\"ts\":1790856000,\"type\":\"key_delete\"}"
+  },
+  {
+   "name": "нет обязательного поля",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000000\",\"target\":\"d-Zm9vYmFyMTIzNDU2\",\"ts\":1790856000,\"type\":\"device_approve\",\"user\":\"anna\"}"
+  },
+  {
+   "name": "space у действия вне пространства",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000000\",\"provider\":\"sakana\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"key_delete\"}"
+  },
+  {
+   "name": "нет space у действия в пространстве",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-04\",\"limit_tokens\":null,\"limit_usd\":20,\"members\":[\"anna\",\"bob\"],\"model\":\"fugu-max-v1.0\",\"nonce\":\"vector-nonce-000000000\",\"per_member_usd_day\":5,\"proposal\":\"p-7\",\"provider\":\"sakana\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}"
+  },
+  {
+   "name": "невидимый символ (zero-width space) в команде",
+   "canonical": "{\"agent\":\"duty\",\"command\":\"ls​; rm -rf /\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000000\",\"server\":\"prod-1\",\"space\":\"u-anna\",\"ts\":1790856000,\"type\":\"ssh_write\"}"
+  },
+  {
+   "name": "bidi-переворот в имени устройства",
+   "canonical": "{\"confirm_jkt\":\"q7Xo0Yb1mC3nD5pF7rH9tJ1vL3xN5zP7bR9dT1fV3hA\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"name\":\"iPhone‮gpj.exe\",\"nonce\":\"vector-nonce-000000000\",\"session_jkt\":\"q7Xo0Yb1mC3nD5pF7rH9tJ1vL3xN5zP7bR9dT1fV3hA\",\"ts\":1790856000,\"type\":\"device_enroll\"}"
+  },
+  {
+   "name": "перевод строки в команде",
+   "canonical": "{\"agent\":\"duty\",\"command\":\"ls\\nrm -rf /\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000000\",\"server\":\"prod-1\",\"space\":\"u-anna\",\"ts\":1790856000,\"type\":\"ssh_write\"}"
+  },
+  {
+   "name": "пробел по краям",
+   "canonical": "{\"confirm_jkt\":\"q7Xo0Yb1mC3nD5pF7rH9tJ1vL3xN5zP7bR9dT1fV3hA\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"name\":\" iPhone\",\"nonce\":\"vector-nonce-000000000\",\"session_jkt\":\"q7Xo0Yb1mC3nD5pF7rH9tJ1vL3xN5zP7bR9dT1fV3hA\",\"ts\":1790856000,\"type\":\"device_enroll\"}"
+  },
+  {
+   "name": "строка длиннее лимита",
+   "canonical": "{\"confirm_jkt\":\"q7Xo0Yb1mC3nD5pF7rH9tJ1vL3xN5zP7bR9dT1fV3hA\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"name\":\"яяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя\",\"nonce\":\"vector-nonce-000000000\",\"session_jkt\":\"q7Xo0Yb1mC3nD5pF7rH9tJ1vL3xN5zP7bR9dT1fV3hA\",\"ts\":1790856000,\"type\":\"device_enroll\"}"
+  },
+  {
+   "name": "key_hint из 5 символов",
+   "canonical": "{\"ct_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_hint\":\"56789\",\"nonce\":\"vector-nonce-000000000\",\"provider\":\"anthropic\",\"ts\":1790856000,\"type\":\"key_put\"}"
+  },
+  {
+   "name": "неизвестный провайдер",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000000\",\"provider\":\"unknown\",\"ts\":1790856000,\"type\":\"key_delete\"}"
+  },
+  {
+   "name": "egress_set: заглавные буквы",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"domains\":[\"Docs.Python.org\"],\"nonce\":\"vector-nonce-000000000\",\"ts\":1790856000,\"type\":\"egress_set\"}"
+  },
+  {
+   "name": "egress_set: звёздочка",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"domains\":[\"*.python.org\"],\"nonce\":\"vector-nonce-000000000\",\"ts\":1790856000,\"type\":\"egress_set\"}"
+  },
+  {
+   "name": "egress_set: IP-адрес",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"domains\":[\"10.0.0.1\"],\"nonce\":\"vector-nonce-000000000\",\"ts\":1790856000,\"type\":\"egress_set\"}"
+  },
+  {
+   "name": "egress_set: повтор",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"domains\":[\"a.com\",\"a.com\"],\"nonce\":\"vector-nonce-000000000\",\"ts\":1790856000,\"type\":\"egress_set\"}"
+  },
+  {
+   "name": "egress_set: без точки",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"domains\":[\"localhost\"],\"nonce\":\"vector-nonce-000000000\",\"ts\":1790856000,\"type\":\"egress_set\"}"
+  },
+  {
+   "name": "mcp_put: http вместо https",
+   "canonical": "{\"ct_sha256\":null,\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"id\":\"docs\",\"name\":\"x\",\"nonce\":\"vector-nonce-000000000\",\"token_hint\":null,\"ts\":1790856000,\"type\":\"mcp_put\",\"url\":\"http://mcp.example.com\"}"
+  },
+  {
+   "name": "mcp_put: токен без хеша шифротекста",
+   "canonical": "{\"ct_sha256\":null,\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"id\":\"docs\",\"name\":\"x\",\"nonce\":\"vector-nonce-000000000\",\"token_hint\":\"abcd\",\"ts\":1790856000,\"type\":\"mcp_put\",\"url\":\"https://mcp.example.com\"}"
+  },
+  {
+   "name": "mcp_put: id с заглавной",
+   "canonical": "{\"ct_sha256\":null,\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"id\":\"Docs\",\"name\":\"x\",\"nonce\":\"vector-nonce-000000000\",\"token_hint\":null,\"ts\":1790856000,\"type\":\"mcp_put\",\"url\":\"https://mcp.example.com\"}"
+  },
+  {
+   "name": "mcp_put: пробел в адресе",
+   "canonical": "{\"ct_sha256\":null,\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"id\":\"docs\",\"name\":\"x\",\"nonce\":\"vector-nonce-000000000\",\"token_hint\":null,\"ts\":1790856000,\"type\":\"mcp_put\",\"url\":\"https://mcp.example.com/a b\"}"
+  },
+  {
+   "name": "сумма с тремя знаками",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-04\",\"limit_tokens\":null,\"limit_usd\":12.345,\"members\":[\"anna\",\"bob\"],\"model\":\"fugu-max-v1.0\",\"nonce\":\"vector-nonce-000000000\",\"per_member_usd_day\":5,\"proposal\":\"p-7\",\"provider\":\"sakana\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}"
+  },
+  {
+   "name": "нулевая сумма",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-04\",\"limit_tokens\":null,\"limit_usd\":0,\"members\":[\"anna\",\"bob\"],\"model\":\"fugu-max-v1.0\",\"nonce\":\"vector-nonce-000000000\",\"per_member_usd_day\":5,\"proposal\":\"p-7\",\"provider\":\"sakana\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}"
+  },
+  {
+   "name": "сумма строкой",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-04\",\"limit_tokens\":null,\"limit_usd\":\"20\",\"members\":[\"anna\",\"bob\"],\"model\":\"fugu-max-v1.0\",\"nonce\":\"vector-nonce-000000000\",\"per_member_usd_day\":5,\"proposal\":\"p-7\",\"provider\":\"sakana\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}"
+  },
+  {
+   "name": "limit_tokens = 0",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-04\",\"limit_tokens\":0,\"limit_usd\":20,\"members\":[\"anna\",\"bob\"],\"model\":\"fugu-max-v1.0\",\"nonce\":\"vector-nonce-000000000\",\"per_member_usd_day\":5,\"proposal\":\"p-7\",\"provider\":\"sakana\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}"
+  },
+  {
+   "name": "повтор участника",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-04\",\"limit_tokens\":null,\"limit_usd\":20,\"members\":[\"anna\",\"anna\"],\"model\":\"fugu-max-v1.0\",\"nonce\":\"vector-nonce-000000000\",\"per_member_usd_day\":5,\"proposal\":\"p-7\",\"provider\":\"sakana\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}"
+  },
+  {
+   "name": "пустой список участников",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-04\",\"limit_tokens\":null,\"limit_usd\":20,\"members\":[],\"model\":\"fugu-max-v1.0\",\"nonce\":\"vector-nonce-000000000\",\"per_member_usd_day\":5,\"proposal\":\"p-7\",\"provider\":\"sakana\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}"
+  },
+  {
+   "name": "несуществующая дата",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-02-28\",\"limit_tokens\":null,\"limit_usd\":20,\"members\":[\"anna\",\"bob\"],\"model\":\"fugu-max-v1.0\",\"nonce\":\"vector-nonce-000000000\",\"per_member_usd_day\":5,\"proposal\":\"p-7\",\"provider\":\"sakana\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-02-30\"}"
+  },
+  {
+   "name": "доступ к ключу дольше спонсорства",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-05\",\"limit_tokens\":null,\"limit_usd\":20,\"members\":[\"anna\",\"bob\"],\"model\":\"fugu-max-v1.0\",\"nonce\":\"vector-nonce-000000000\",\"per_member_usd_day\":5,\"proposal\":\"p-7\",\"provider\":\"sakana\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}"
+  },
+  {
+   "name": "Git-провайдер с моделью не git",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-04\",\"limit_tokens\":null,\"limit_usd\":20,\"members\":[\"anna\",\"bob\"],\"model\":\"fugu-max-v1.0\",\"nonce\":\"vector-nonce-000000000\",\"per_member_usd_day\":5,\"proposal\":\"p-7\",\"provider\":\"github\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}"
+  },
+  {
+   "name": "модель git у провайдера моделей",
+   "canonical": "{\"chat\":\"c-42\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"key_until\":\"2026-10-04\",\"limit_tokens\":null,\"limit_usd\":20,\"members\":[\"anna\",\"bob\"],\"model\":\"git\",\"nonce\":\"vector-nonce-000000000\",\"per_member_usd_day\":5,\"proposal\":\"p-7\",\"provider\":\"sakana\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"grant\",\"until\":\"2026-10-04\"}"
+  },
+  {
+   "name": "ssh_danger: имя сервера введено неверно",
+   "canonical": "{\"agent\":\"duty\",\"command\":\"ls\",\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000000\",\"server\":\"prod-1\",\"space\":\"u-anna\",\"ts\":1790856000,\"type\":\"ssh_danger\",\"typed_server\":\"prod-2\"}"
+  },
+  {
+   "name": "порт вне диапазона",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"host\":\"app.example.kz\",\"host_key\":\"SHA256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"nonce\":\"vector-nonce-000000000\",\"port\":70000,\"server\":\"prod-1\",\"space\":\"u-anna\",\"ts\":1790856000,\"type\":\"server_add\",\"user\":\"deck-agent\"}"
+  },
+  {
+   "name": "неизвестная роль",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"member\":\"bob\",\"nonce\":\"vector-nonce-000000000\",\"role\":\"admin\",\"space\":\"t-shop\",\"ts\":1790856000,\"type\":\"role_change\"}"
+  },
+  {
+   "name": "короткий nonce",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"short\",\"provider\":\"sakana\",\"ts\":1790856000,\"type\":\"key_delete\"}"
+  },
+  {
+   "name": "короткий device_id",
+   "canonical": "{\"device_id\":\"d-1\",\"nonce\":\"vector-nonce-000000000\",\"provider\":\"sakana\",\"ts\":1790856000,\"type\":\"key_delete\"}"
+  },
+  {
+   "name": "дробное время",
+   "canonical": "{\"device_id\":\"d-6UoWwDCkLjV0J-pQ\",\"nonce\":\"vector-nonce-000000000\",\"provider\":\"sakana\",\"ts\":1790856000.5,\"type\":\"key_delete\"}"
+  }
+ ]
+}

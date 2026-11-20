@@ -1,0 +1,125 @@
+# keyguard: единственный, кто видит ключи API; сам подставляет их в запросы (architecture.md, 5).
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: keyguard
+  namespace: deck-keys
+automountServiceAccountToken: true
+---
+# TokenReview: проверка проецируемых токенов пространств (audience=keyguard).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: deck:keyguard-auth-delegator
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:auth-delegator"}
+subjects:
+  - {kind: ServiceAccount, name: keyguard, namespace: deck-keys}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keyguard
+  namespace: deck-keys
+  labels: {app.kubernetes.io/name: keyguard, app.kubernetes.io/part-of: fugu-deck}
+spec:
+  # Экземпляр один: рабочая копия состояния — в памяти, запись — в Postgres под блокировкой экземпляра
+  # (pg_advisory_lock). Recreate обязателен: при RollingUpdate новый под ждал бы блокировку, которую старый не
+  # отпустит, пока новый не станет Ready, — обновление зависло бы.
+  replicas: 1
+  strategy: {type: Recreate, rollingUpdate: null}   # null — чтобы замена стратегии у уже существующего Deployment применилась
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels: {app.kubernetes.io/name: keyguard}
+  template:
+    metadata:
+      labels: {app.kubernetes.io/name: keyguard, app.kubernetes.io/part-of: fugu-deck}
+    spec:
+      serviceAccountName: keyguard
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: keyguard
+          image: ghcr.io/stevv1e/deck-keyguard:0.0.0
+          ports:
+            - {name: http, containerPort: 8080}
+          env:
+            - {name: DECK_OPENBAO_ADDR, value: "http://openbao.deck-secrets.svc.cluster.local:8200"}
+            - {name: DECK_OPENBAO_ROLE, value: "keyguard"}
+            - {name: DECK_OPENBAO_JWT, value: "/var/run/secrets/openbao/token"}
+            # Состояние (устройства, nonce, разрешения, расходы) — в базе keyguard; без неё keyguard не стартует.
+            # Подключение только по TLS (pg_hba допускает лишь hostssl): DECK_DB_SSLMODE по умолчанию require.
+            - {name: DECK_DB_HOST, value: "deck-pg-rw.deck-db.svc.cluster.local"}
+            - {name: DECK_DB_NAME, value: "keyguard"}
+            - name: DB_USER
+              valueFrom: {secretKeyRef: {name: keyguard-db, key: username}}
+            - name: DB_PASSWORD
+              valueFrom: {secretKeyRef: {name: keyguard-db, key: password}}
+            - {name: DECK_KEYCLOAK_ISSUER, value: "https://id.DOMAIN_PLACEHOLDER/realms/deck"}
+            - {name: DECK_KEYCLOAK_JWKS, value: "http://keycloak-service.deck-auth.svc.cluster.local:8080/realms/deck/protocol/openid-connect/certs"}
+            - {name: DECK_TOKEN_AUDIENCE, value: "keyguard"}
+            - {name: DECK_KEY_CACHE_TTL, value: "15m"}   # пока не читается: кэш ключей при запечатанном OpenBao не реализован
+            # Google Drive read-only. Секрет необязателен: без него Drive отключён, остальные провайдеры работают.
+            - name: DECK_GOOGLE_OAUTH_CLIENT_ID
+              valueFrom: {secretKeyRef: {name: google-oauth, key: client_id, optional: true}}
+            - name: DECK_GOOGLE_OAUTH_CLIENT_SECRET
+              valueFrom: {secretKeyRef: {name: google-oauth, key: client_secret, optional: true}}
+            # Цены моделей Anthropic, USD за 1M токенов: "модель=вход:выход,...". Модель без цены keyguard не пропускает
+            # (расход не ограничить). Цены Sakana зашиты в keyguard (fugu-max-v1.0, fugu-ultra-v2.0 — по верхней ставке).
+            # Значения — те же, что в настройках агента по умолчанию (fugu-deck-app/backend/app/config.py, pricing_json);
+            # перед prod сверьте с действующим прайс-листом провайдера: по этим ценам keyguard считает расход и лимиты.
+            - {name: DECK_PRICES_ANTHROPIC, value: "claude-fable-5-2=8:40,claude-opus-5-5=4:20,claude-sonnet-5-5=2:10,claude-haiku-5-5=0.1:0.5,claude-sonnet-5=2:10,claude-haiku-4-5=1:5,claude-fable-5-1=10:50"}
+            # Регистрация устройств: токен Keycloak (realm deck) + DPoP + подпись ключом подтверждения; сертификат mTLS из pki-device.
+            # JWKS — внутренний адрес Keycloak; издатель (DECK_KEYCLOAK_ISSUER) и адреса join — в overlay окружения.
+            # Аттестация устройств (fugu-deck-keyguard/attest.go): optional — проверять, если телефон её прислал;
+            # required — без неё не регистрировать (эмуляторы и программные ключи не пройдут). Платформа без своих
+            # настроек не принимается: Android — пакет и SHA-256 сертификата подписи (hex, через запятую), iOS — <TeamID>.<bundle id>.
+            - {name: DECK_ATTESTATION, value: "optional"}
+            - {name: DECK_ANDROID_PACKAGE, value: "kz.fugudeck.app"}
+            - {name: DECK_ANDROID_CERT_SHA256, value: "39:58:17:B0:92:33:1C:E9:33:61:A4:3F:A4:0B:EE:A6:ED:95:D4:6D:C9:50:64:42:F9:52:30:2B:35:0F:C0:BA"}
+            - {name: DECK_APPLE_APP_ID, value: ""}
+            - {name: DECK_ADMINS, value: ""}            # ники администраторов через запятую: подтверждают чужие устройства
+            - {name: DECK_BOOTSTRAP_ADMIN, value: ""}   # первое устройство этого ника активируется само, пока нет ни одного активного
+            # Аварийный отзыв: ID устройств через запятую, отзываются при старте. Для случая, когда отозвать подписью
+            # некому (единственный администратор потерял единственное устройство) — docs/runbook.md, «Потеряны все устройства».
+            - {name: DECK_REVOKE_DEVICES, value: ""}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          readinessProbe:
+            httpGet: {path: /readyz, port: http}
+          livenessProbe:
+            httpGet: {path: /healthz, port: http}
+            periodSeconds: 20
+          resources:
+            requests: {cpu: 50m, memory: 96Mi}
+            limits: {memory: 384Mi}
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+            - {name: openbao-token, mountPath: /var/run/secrets/openbao, readOnly: true}
+      volumes:
+        - {name: tmp, emptyDir: {}}
+        # Токен для входа в OpenBao: audience=openbao, живёт 10 минут, kubelet обновляет сам.
+        - name: openbao-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: openbao
+                  expirationSeconds: 600
+                  path: token
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keyguard
+  namespace: deck-keys
+  labels: {app.kubernetes.io/name: keyguard}
+spec:
+  selector: {app.kubernetes.io/name: keyguard}
+  ports:
+    - {name: http, port: 8080, targetPort: http}

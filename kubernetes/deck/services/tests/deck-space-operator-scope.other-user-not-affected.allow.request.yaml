@@ -1,0 +1,14 @@
+operation: CREATE
+namespace: deck-db
+object:
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: space-litestream
+    namespace: deck-db
+  stringData:
+    a: b
+userInfo:
+  username: system:serviceaccount:argocd:argocd-application-controller
+  groups:
+  - system:serviceaccounts

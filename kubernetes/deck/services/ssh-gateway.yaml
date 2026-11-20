@@ -1,0 +1,138 @@
+# ssh-gateway: единственный путь к серверам пользователей; SSH-сертификаты на 10 минут (architecture.md, 7.3).
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ssh-gateway
+  namespace: deck-ssh
+automountServiceAccountToken: true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: deck:ssh-gateway-auth-delegator
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:auth-delegator"}
+subjects:
+  - {kind: ServiceAccount, name: ssh-gateway, namespace: deck-ssh}
+---
+# Владелец общего пространства — из объекта Space (spec.owner): только чтение, только объекты Space (D55).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ssh-gateway-read-spaces
+  namespace: deck-system
+rules:
+  - apiGroups: [deck.fugu]
+    resources: [spaces]
+    verbs: [get]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ssh-gateway-read-spaces
+  namespace: deck-system
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: ssh-gateway-read-spaces}
+subjects:
+  - {kind: ServiceAccount, name: ssh-gateway, namespace: deck-ssh}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ssh-gateway
+  namespace: deck-ssh
+  labels: {app.kubernetes.io/name: ssh-gateway, app.kubernetes.io/part-of: fugu-deck}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  # один под на том ReadWriteOnce с подписанными привязками
+  strategy: {type: Recreate}
+  selector:
+    matchLabels: {app.kubernetes.io/name: ssh-gateway}
+  template:
+    metadata:
+      labels: {app.kubernetes.io/name: ssh-gateway, app.kubernetes.io/part-of: fugu-deck}
+    spec:
+      serviceAccountName: ssh-gateway
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: ssh-gateway
+          image: ghcr.io/stevv1e/deck-ssh-gateway:0.0.0
+          ports:
+            - {name: http, containerPort: 8080}
+          env:
+            - {name: DECK_OPENBAO_ADDR, value: "http://openbao.deck-secrets.svc.cluster.local:8200"}
+            - {name: DECK_OPENBAO_ROLE, value: "ssh-gateway"}
+            - {name: DECK_OPENBAO_JWT, value: "/var/run/secrets/openbao/token"}
+            - {name: DECK_KEYGUARD_URL, value: "http://keyguard.deck-keys.svc.cluster.local:8080"}
+            - {name: DECK_TOKEN_AUDIENCE, value: "ssh-gateway"}
+            - {name: DECK_CERT_TTL, value: "10m"}
+            - {name: DECK_COMMAND_TIMEOUT, value: "5m"}
+            - {name: DECK_STATE_FILE, value: "/var/lib/ssh-gateway/state.json"}
+            # Исходящий адрес кластера: сертификат агента действует только с него. Задаётся в overlay окружения.
+            - {name: DECK_EGRESS_IP, value: ""}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          readinessProbe:
+            httpGet: {path: /readyz, port: http}
+          livenessProbe:
+            httpGet: {path: /healthz, port: http}
+            periodSeconds: 20
+          resources:
+            requests: {cpu: 50m, memory: 96Mi}
+            limits: {memory: 384Mi}
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+            - {name: state, mountPath: /var/lib/ssh-gateway}
+            - {name: openbao-token, mountPath: /var/run/secrets/openbao, readOnly: true}
+            - {name: keyguard-token, mountPath: /var/run/secrets/keyguard, readOnly: true}
+      volumes:
+        - {name: tmp, emptyDir: {}}
+        # Проверенные привязки «сервер» и «права агента»: подпись нельзя проверить дважды, результат хранит шлюз
+        - name: state
+          persistentVolumeClaim: {claimName: ssh-gateway-state}
+        # Токен для keyguard (audience=keyguard): им шлюз представляется при проверке подписей
+        - name: keyguard-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: keyguard
+                  expirationSeconds: 600
+                  path: token
+        # Токен для входа в OpenBao: audience=openbao, живёт 10 минут, kubelet обновляет сам.
+        - name: openbao-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: openbao
+                  expirationSeconds: 600
+                  path: token
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ssh-gateway
+  namespace: deck-ssh
+  labels: {app.kubernetes.io/name: ssh-gateway}
+spec:
+  selector: {app.kubernetes.io/name: ssh-gateway}
+  ports:
+    - {name: http, port: 8080, targetPort: http}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ssh-gateway-state
+  namespace: deck-ssh
+  labels: {app.kubernetes.io/name: ssh-gateway, app.kubernetes.io/part-of: fugu-deck}
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: local-path
+  resources:
+    requests: {storage: 1Gi}

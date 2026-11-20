@@ -1,0 +1,14 @@
+operation: CREATE
+object:
+  apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: deck-u-anna
+    labels:
+      kubernetes.io/metadata.name: deck-u-anna
+      deck.fugu/space: 'true'
+      pod-security.kubernetes.io/enforce: restricted
+userInfo:
+  username: system:serviceaccount:deck-system:space-operator
+  groups:
+  - system:serviceaccounts

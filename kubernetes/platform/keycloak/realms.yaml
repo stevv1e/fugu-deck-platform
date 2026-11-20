@@ -1,0 +1,214 @@
+# Импорт выполняется один раз при создании realm. Дальнейшие изменения realm — через Admin API
+# (или удалить KeycloakRealmImport и realm в тестовом кластере и дать импорту пройти заново).
+apiVersion: k8s.keycloak.org/v2beta1
+kind: KeycloakRealmImport
+metadata:
+  name: deck
+  namespace: deck-auth
+spec:
+  keycloakCRName: keycloak
+  realm:
+    realm: deck
+    displayName: Fugu Deck
+    loginTheme: fugu
+    internationalizationEnabled: true
+    supportedLocales: [ru, en]
+    defaultLocale: ru
+    enabled: true
+    sslRequired: all
+
+    # Никакой самостоятельной регистрации, паролей, почты: вход только passkey (architecture.md, 4).
+    registrationAllowed: false
+    resetPasswordAllowed: false
+    rememberMe: false
+    editUsernameAllowed: false
+    loginWithEmailAllowed: false
+    duplicateEmailsAllowed: false
+    verifyEmail: false
+    organizationsEnabled: false
+
+    bruteForceProtected: true
+    permanentLockout: false
+    failureFactor: 5
+    waitIncrementSeconds: 60
+    maxFailureWaitSeconds: 900
+    maxDeltaTimeSeconds: 43200
+
+    # Токен доступа — 5 минут; сессия СКОЛЬЗЯЩАЯ: 30 дней без входа = правилу удаления (architecture.md, 3.3).
+    # MaxLifespan — жёсткий предел от первого входа: при 30 днях сессия обрывалась бы и у ежедневного пользователя,
+    # а повторный вход идёт через браузерные страницы, закрытые invite-gate (нужен был бы новый инвайт).
+    accessTokenLifespan: 300
+    ssoSessionIdleTimeout: 2592000
+    ssoSessionMaxLifespan: 31536000
+    # Ротация refresh-токенов выключена: токен привязан к ключу устройства (DPoP), украденный бесполезен,
+    # а один потерянный на мобильной сети ответ при ротации гасил бы сессию (и снова — инвайт).
+    revokeRefreshToken: false
+    refreshTokenMaxReuse: 0
+
+    webAuthnPolicyPasswordlessRpEntityName: Fugu Deck
+    webAuthnPolicyPasswordlessRpId: id.DOMAIN_PLACEHOLDER
+    webAuthnPolicyPasswordlessSignatureAlgorithms: [ES256]
+    webAuthnPolicyPasswordlessUserVerificationRequirement: required
+    webAuthnPolicyPasswordlessRequireResidentKey: "Yes"
+    webAuthnPolicyPasswordlessAttestationConveyancePreference: none
+    webAuthnPolicyPasswordlessPasskeysEnabled: true
+
+    eventsEnabled: true
+    eventsExpiration: 2592000
+    adminEventsEnabled: true
+    adminEventsDetailsEnabled: false
+
+    browserFlow: deck-passkey
+    authenticationFlows:
+      - alias: deck-passkey
+        description: Вход только passkey (без имени пользователя и пароля)
+        providerId: basic-flow
+        topLevel: true
+        builtIn: false
+        authenticationExecutions:
+          - authenticator: auth-cookie
+            requirement: ALTERNATIVE
+            priority: 10
+            authenticatorFlow: false
+            userSetupAllowed: false
+          # Первый вход по приглашению (модуль images/keycloak/provider): приглашённого без passkey ведёт на
+          # регистрацию passkey; всех остальных пропускает дальше, к обычному входу.
+          - authenticator: deck-invite
+            requirement: ALTERNATIVE
+            priority: 15
+            authenticatorFlow: false
+            userSetupAllowed: false
+          - authenticator: webauthn-authenticator-passwordless
+            requirement: ALTERNATIVE
+            priority: 20
+            authenticatorFlow: false
+            userSetupAllowed: false
+
+    requiredActions:
+      - alias: webauthn-register-passwordless
+        name: Webauthn Register Passwordless
+        providerId: webauthn-register-passwordless
+        enabled: true
+        defaultAction: true
+        priority: 10
+      - alias: UPDATE_PASSWORD
+        name: Update Password
+        providerId: UPDATE_PASSWORD
+        enabled: false
+        defaultAction: false
+        priority: 100
+      - alias: CONFIGURE_TOTP
+        name: Configure OTP
+        providerId: CONFIGURE_TOTP
+        enabled: false
+        defaultAction: false
+        priority: 101
+
+    clients:
+      - clientId: deck-app
+        name: Fugu Deck (iOS / Android)
+        enabled: true
+        protocol: openid-connect
+        publicClient: true
+        standardFlowEnabled: true
+        implicitFlowEnabled: false
+        directAccessGrantsEnabled: false
+        serviceAccountsEnabled: false
+        frontchannelLogout: false
+        fullScopeAllowed: false
+        redirectUris:
+          - fugudeck://oauth          # = REDIRECT_URI в mobile/src/core/cluster.ts
+        webOrigins: []
+        attributes:
+          pkce.code.challenge.method: S256
+          dpop.bound.access.tokens: "true"
+          use.refresh.tokens: "true"
+          client_credentials.use_refresh_token: "false"
+          oauth2.device.authorization.grant.enabled: "false"
+          oidc.ciba.grant.enabled: "false"
+          post.logout.redirect.uris: "fugudeck://oauth/logout"
+          access.token.lifespan: "300"
+      # control-plane: сервисная учётная запись для Admin API. Единственная роль — manage-users: создать
+      # пользователя под приглашение. Менять realm, клиентов и потоки входа она не может (проверяет
+      # fugu-deck-control-plane/scripts/keycloak_test.sh). Секрет — из OpenBao (platform/keycloak/control-plane).
+      - clientId: deck-control-plane
+        name: Fugu Deck control-plane
+        enabled: true
+        protocol: openid-connect
+        publicClient: false
+        secret: ${CP_CLIENT_SECRET}
+        serviceAccountsEnabled: true
+        standardFlowEnabled: false
+        implicitFlowEnabled: false
+        directAccessGrantsEnabled: false
+        fullScopeAllowed: false
+        redirectUris: []
+        webOrigins: []
+    users:
+      - username: service-account-deck-control-plane
+        enabled: true
+        serviceAccountClientId: deck-control-plane
+        clientRoles:
+          realm-management: [manage-users]
+    clientScopeMappings:
+      realm-management:
+        - client: deck-control-plane
+          roles: [manage-users]
+  placeholders:
+    CP_CLIENT_SECRET:
+      secret: {name: keycloak-control-plane-client, key: secret}
+---
+# Администраторы: отдельный realm, фронтенд только на sso.admin.<домен>:9443 (VPN + mTLS).
+# OIDC-клиенты для Argo CD, OpenBao и Grafana подключим отдельным шагом (docs/decisions.md, D8).
+apiVersion: k8s.keycloak.org/v2beta1
+kind: KeycloakRealmImport
+metadata:
+  name: ops
+  namespace: deck-auth
+spec:
+  keycloakCRName: keycloak
+  realm:
+    realm: ops
+    displayName: Fugu Deck Ops
+    enabled: true
+    sslRequired: all
+    registrationAllowed: false
+    resetPasswordAllowed: false
+    rememberMe: false
+    loginWithEmailAllowed: false
+    bruteForceProtected: true
+    failureFactor: 5
+    accessTokenLifespan: 300
+    ssoSessionIdleTimeout: 1800
+    ssoSessionMaxLifespan: 36000
+    attributes:
+      frontendUrl: https://sso.admin.DOMAIN_PLACEHOLDER:9443
+    webAuthnPolicyPasswordlessRpEntityName: Fugu Deck Ops
+    webAuthnPolicyPasswordlessRpId: sso.admin.DOMAIN_PLACEHOLDER
+    webAuthnPolicyPasswordlessUserVerificationRequirement: required
+    webAuthnPolicyPasswordlessRequireResidentKey: "Yes"
+    webAuthnPolicyPasswordlessPasskeysEnabled: true
+    eventsEnabled: true
+    adminEventsEnabled: true
+    browserFlow: ops-passkey
+    authenticationFlows:
+      - alias: ops-passkey
+        providerId: basic-flow
+        topLevel: true
+        builtIn: false
+        authenticationExecutions:
+          - authenticator: auth-cookie
+            requirement: ALTERNATIVE
+            priority: 10
+            authenticatorFlow: false
+          - authenticator: webauthn-authenticator-passwordless
+            requirement: ALTERNATIVE
+            priority: 20
+            authenticatorFlow: false
+    requiredActions:
+      - alias: webauthn-register-passwordless
+        name: Webauthn Register Passwordless
+        providerId: webauthn-register-passwordless
+        enabled: true
+        defaultAction: true
+        priority: 10

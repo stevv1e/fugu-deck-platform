@@ -1,0 +1,9 @@
+title = "Fugu Deck public source allowlist"
+
+[allowlist]
+description = "Deterministic public test vectors and disposable lab tokens only"
+paths = [
+  '''(^|/)testdata/''',
+  '''(^|/)fixtures/''',
+  '''^keyguard/scripts/live_smoke\.sh$''',
+]

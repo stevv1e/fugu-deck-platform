@@ -1,0 +1,141 @@
+# Описание пространства. control-plane создаёт и меняет Space, но удалить не может (нет verb delete):
+# он ставит spec.deleteRequestedAt, а space-operator через 24 ч удаляет namespace и сам объект (architecture.md, 6.2).
+#
+# Запрос удаления обязан нести подпись владельца (spec.deleteSignature — JWS действия space_delete или account_delete
+# ключом подтверждения с Face ID). space-operator НЕ начинает отсчёт 24 ч, пока не проверит подпись через keyguard
+# (POST /v1/actions/verify) и не убедится, что подписавший — владелец (spec.owner), а действие относится к этому
+# пространству. control-plane доступен из интернета: без подписи его взлом означал бы удаление всех пространств,
+# а уведомление «отменить» шлёт он же. Исключение — удаление по неактивности 30 дней: его инициирует сам оператор.
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: spaces.deck.fugu
+spec:
+  group: deck.fugu
+  scope: Namespaced
+  names:
+    kind: Space
+    plural: spaces
+    singular: space
+    shortNames: [sp]
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - {name: Kind, type: string, jsonPath: .spec.kind}
+        - {name: Owner, type: string, jsonPath: .spec.owner}
+        - {name: Phase, type: string, jsonPath: .status.phase}
+        - {name: Delete-At, type: string, jsonPath: .status.deleteAt}
+        - {name: Backup, type: date, jsonPath: .status.lastBackup}
+        - {name: Age, type: date, jsonPath: .metadata.creationTimestamp}
+      schema:
+        openAPIV3Schema:
+          type: object
+          required: [spec]
+          properties:
+            spec:
+              type: object
+              required: [kind, owner]
+              x-kubernetes-validations:
+                - rule: "!has(self.deleteRequestedAt) || has(self.deleteSignature)"
+                  message: запрос удаления без подписи владельца (deleteSignature) не принимается
+                - rule: "self.kind == 'team' || self.owner == oldSelf.owner"
+                  message: владелец личного пространства не меняется; у общего — передачей владения (role_change owner)
+              properties:
+                kind:
+                  type: string
+                  enum: [personal, team]
+                  x-kubernetes-validations:
+                    - rule: "self == oldSelf"
+                      message: kind неизменяем
+                owner:
+                  description: ID владельца (не ник — ник можно сменить). У общего пространства меняется передачей владения
+                  type: string
+                  pattern: "^[a-z0-9][a-z0-9-]{2,40}$"
+                suspended:
+                  description: Усыпить (0 реплик). Выставляет control-plane по неактивности 60 мин
+                  type: boolean
+                  default: false
+                resources:
+                  type: object
+                  properties:
+                    memoryLimit: {type: string, default: 600Mi}
+                    cpuLimit: {type: string, default: "1"}
+                    storage: {type: string, default: 2Gi}
+                egressDomains:
+                  description: Дополнительные домены для Squid (агенты)
+                  type: array
+                  maxItems: 50
+                  items:
+                    type: string
+                    pattern: "^(\\.)?([a-z0-9-]+\\.)+[a-z]{2,}$"
+                inactiveDelete:
+                  description: >-
+                    control-plane просит удалить аккаунт владельца по неактивности (30 дней без входа, D54). Оператор
+                    исполняет, только если сам видит пространство спящим всё это время; снять (false) — отмена
+                  type: boolean
+                deleteRequestedAt:
+                  description: Запрос на удаление. Снять (null) можно до истечения 24 ч — это отмена
+                  type: string
+                  format: date-time
+                deleteSignature:
+                  description: >-
+                    Подписанное владельцем действие space_delete (или account_delete) — компактный JWS typ=deck-action+jws.
+                    Проверяет space-operator через keyguard; без действительной подписи удаление не выполняется
+                  type: string
+                  maxLength: 4096
+                  pattern: "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
+            status:
+              type: object
+              properties:
+                phase:
+                  type: string
+                  enum: [Pending, Ready, Sleeping, Deleting, Failed]
+                namespace: {type: string}
+                deleteAt: {type: string, format: date-time}
+                deleteVerified:
+                  description: SHA-256 подписи запроса удаления, которую оператор проверил через keyguard ("rejected:<хеш>" — отклонена)
+                  type: string
+                  maxLength: 80
+                deleteError:
+                  description: Почему запрос удаления отклонён
+                  type: string
+                  maxLength: 400
+                deleteKind:
+                  description: Что удаляется вместе с пространством — account (подпись account_delete) или inactive (неактивность)
+                  type: string
+                  enum: [account, inactive]
+                sleepingSince:
+                  description: С какого момента пространство непрерывно спит (оператор; для удаления по неактивности)
+                  type: string
+                  format: date-time
+                filesSha:
+                  description: SHA-256 последней загруженной описи файлов пространства
+                  type: string
+                  maxLength: 64
+                lastActivity: {type: string, format: date-time}
+                lastBackup: {type: string, format: date-time}
+                backupSha:
+                  description: SHA-256 последнего снимка базы, загруженного в хранилище копий
+                  type: string
+                  maxLength: 64
+                restorePending:
+                  description: Том создан заново, а копия есть — после запуска агента оператор восстановит данные
+                  type: boolean
+                restoredAt: {type: string, format: date-time}
+                restoreError: {type: string, maxLength: 400}
+                observedGeneration: {type: integer, format: int64}
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    required: [type, status]
+                    properties:
+                      type: {type: string}
+                      status: {type: string, enum: ["True", "False", "Unknown"]}
+                      reason: {type: string}
+                      message: {type: string}
+                      lastTransitionTime: {type: string, format: date-time}

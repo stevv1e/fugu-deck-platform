@@ -1,0 +1,48 @@
+# RBAC не умеет «только namespace с префиксом», поэтому ограничиваем space-operator правилом допуска:
+# писать он может только в deck-u-*/deck-t-*, плюс Space и lease в deck-system, NetworkPolicy
+# доступа к серверам в deck-ssh и списки Squid в deck-egress.
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: deck-space-operator-scope
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["*"]
+        apiVersions: ["*"]
+        operations: ["CREATE", "UPDATE", "DELETE"]
+        resources: ["*/*"]
+  matchConditions:
+    - name: is-space-operator
+      expression: "request.userInfo.username == 'system:serviceaccount:deck-system:space-operator'"
+  variables:
+    - name: ns
+      expression: "has(request.namespace) ? request.namespace : ''"
+    - name: res
+      expression: "request.resource.resource"
+    - name: nsName
+      expression: "request.operation == 'DELETE' ? oldObject.metadata.name : object.metadata.name"
+    - name: spaceNs
+      expression: "variables.ns.startsWith('deck-u-') || variables.ns.startsWith('deck-t-')"
+  validations:
+    - expression: >-
+        variables.res != 'namespaces' ||
+        variables.nsName.startsWith('deck-u-') || variables.nsName.startsWith('deck-t-')
+      reason: Forbidden
+      message: "space-operator управляет только namespace deck-u-* и deck-t-*."
+    - expression: >-
+        variables.res == 'namespaces' || variables.spaceNs ||
+        (variables.ns == 'deck-system' && variables.res in ['spaces', 'leases', 'events']) ||
+        (variables.ns == 'deck-ssh' && variables.res in ['networkpolicies', 'events']) ||
+        (variables.ns == 'deck-egress' && variables.res in ['configmaps', 'events'])
+      reason: Forbidden
+      message: "space-operator не пишет за пределы пространств."
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: deck-space-operator-scope
+spec:
+  policyName: deck-space-operator-scope
+  validationActions: [Deny]

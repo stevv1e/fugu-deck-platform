@@ -1,0 +1,12 @@
+# Наши сервисы. Включаются в clusters/<env>/apps/60-deck-services.yaml, когда появятся образы.
+# Для space-operator и ssh-gateway кода ещё нет: их Deployment убирает overlay окружения (clusters/<env>/deck-services),
+# а учётные записи, роли и правила допуска остаются — на них опираются тесты правил и лаборатория.
+# Версии образов задаёт окружение (images: в clusters/<env>/deck-services).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - control-plane.yaml
+  - space-operator.yaml
+  - keyguard.yaml
+  - ssh-gateway.yaml
+  - operator-scope.policy.yaml
