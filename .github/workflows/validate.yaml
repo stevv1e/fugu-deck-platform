@@ -13,6 +13,12 @@ jobs:
         component: [keyguard, control-plane, space-operator, ssh-gateway]
     steps:
       - uses: actions/checkout@v7
+      - if: matrix.component == 'keyguard'
+        name: Public Space backend for Git allowlist cross-check
+        uses: actions/checkout@v7
+        with:
+          repository: stevv1e/fugu-deck-app
+          path: fugu-deck-app
       - uses: actions/setup-go@v6
         with: {go-version: "1.26"}
       - name: Formatting
